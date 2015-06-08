@@ -4,6 +4,7 @@ var user =require('../controllers/user');
 var restaurant =require('../controllers/restaurant');
 var item =require('../controllers/item');
 var order = require('../controllers/order');
+var fs = require('../controllers/filesys');
 var passport = require('passport');
 
 
@@ -53,6 +54,10 @@ router.get('/order/:id', order.get);
 router.post('/order/:id', order.edit);
 
 router.get('/order/user/:id', order.getOrdersByUserId);
+
+//--------------------File System----------------------
+
+router.get('/images/:path', fs.getImage);
 
 module.exports = router;
 

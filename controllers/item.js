@@ -1,4 +1,5 @@
 var Item = require('../models/item');
+var fs = require('fs');
 
 //POST: Create a new Item 
 exports.create = function (req, res){
