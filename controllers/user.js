@@ -264,6 +264,19 @@ exports.retrieve_password = function (req,res){
 }
 
 
+exports.cleanupToken = function() {
+	console.log('got here');
+	// Token.remove({}, function(err){
+	// 	if(err){
+	// 		console.log('Token clean up occur error');
+	// 	}
+	// 	else {
+	// 		console.log('Token clean up success');
+	// 	}
+
+	// });
+}
+
 
 passport.serializeUser(function(user,done){
 	done(null, user._id);

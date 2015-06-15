@@ -19,6 +19,7 @@ var db = require('./db');
 //-----------------------------
 var api = require('./routes/api');
 var admin = require('./routes/index');
+var scheduler = require('./modules/scheduler');
 
 //------------------------------
 //Create a express object
