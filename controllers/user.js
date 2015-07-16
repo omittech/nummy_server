@@ -3,9 +3,6 @@ var Token = require('../models/token');
 var Code = require('../models/forgetpasswordcode');
 var crypto = require('crypto');
 var session = require('express-session');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-
 var crypt = "secret";
 
 exports.get = function (req, res){
@@ -277,53 +274,6 @@ exports.cleanupToken = function() {
 	// });
 }
 
-
-passport.serializeUser(function(user,done){
-	done(null, user._id);
-});
-
-passport.deserializeUser(function(id,done){
-	User.findById(id,function(err,user){
-		done(err,user);
-	});
-});
-
-passport.use('local', new LocalStrategy(
-	function(username,password,done){
-		var user = {
-			username : 'test002',
-			password : '1234'
-		};
-		User.findOne({username:username},function(err,user){
-			if(!user) return done(null,false,{message: 'user no exist'});
-			bcompare(user.password,hash,function(err,isMatch){
-				if(isMatch) {
-					return done (null,user);
-				}
-				else {
-					return done (null,false,{message: 'password is incorrect'});
-				}
-			});
-		});
-	}));
-
-var bcompare = function (str, hash, callback) {
-	bcrypt.compare(str, hash, callback);
-};
-
-exports.authenticate = function (req,res) {
-	passport.authenticate('local',function (err, user, info) {
-		if(err) return next(err);
-		if(!user) {
-			console.log("error is happened");
-			req.flash('errors', { msg: info.message });
-		}
-		else {
-			console.log("success");
-			req.flash('success', { msg: 'success' });
-		}
-	});
-}
 
 
 

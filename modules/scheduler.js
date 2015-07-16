@@ -9,8 +9,8 @@ var user =require('../controllers/user');
 var job = new CronJob({
   cronTime: '* * * * * *',
   onTick: function() {
-   user.cleanupToken;
-   console.log('You will see this per sec');
+   //user.cleanupToken;
+   //console.log('You will see this per sec');
   },
   start: false,
   timeZone: 'America/Los_Angeles'
