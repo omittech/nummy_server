@@ -1,17 +1,9 @@
 var mongoose = require('mongoose');
 
 var OrderSchema = mongoose.model('Order', new mongoose.Schema({
-		userId : { type : mongoose.Schema.Types.ObjectId, require : true } ,
-		restaurantId : { type : mongoose.Schema.Types.ObjectId, require : true},
-		items : [
-			{
-				itemId : { type : mongoose.Schema.Types.ObjectId, require : true },
-				name : {type: String, require :true},
-				image : {type : String},
-				price : {type : Number, require:true},
-				qty : {type : Number, require : true } 
-			}
-		],
+		userId : { type : mongoose.Schema.Types.Mixed, ref: 'User'},
+		restaurantId : { type : mongoose.Schema.Types.Mixed, ref: 'Restaurant'},
+		items : [{type: mongoose.Schema.Types.Mixed}],
 		subtotal : {type : Number, require : true } ,
 		tax : Number,
 		total : {type : Number, require : true } ,

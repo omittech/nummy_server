@@ -1,33 +1,55 @@
 var Restaurant = require('../models/restaurant');
+var Item = require('../models/item');
 var async = require('async');
 
 
 //POST: Create a new restaurant 
 exports.create = function (req, res){
 	var restaurant = new Restaurant(req.body);
-	restaurant.save(function(err,result){
-		if(err){
-			res.json({
-				status :'fail',
-				message : err,
-				data :null
-			});
-		}
-		else {
-			res.json({
-				status:'ok',
-				message : 'success',
-				data:result
-			});
-		}		
+	restaurant.items =[];
+	var items = req.body.items;
+	async.each(items, function(item, callback){
+		var itemObj = new Item(item);
+		itemObj.save(function(err,item_result){
+			if(err){
+				res.json({
+					status :'fail',
+					message : err,
+					data :null
+				});
+			}
+			else {
+				restaurant.items.push(item_result._id);
+				callback();
+			}
+		});
+	},
+	function(err){
+		restaurant.save(function(err,result){
+			if(err){
+				res.json({
+					status :'fail',
+					message : err,
+					data :null
+				});
+			}
+			else {
+				res.json({
+					status:'ok',
+					message : 'success',
+					data:result
+				});
+			}
+		});
 	});
+
 }
 
 //GET
 exports.get = function(req,res){
 	var id = req.params.id;
 	if(id !=null){
-		Restaurant.find({_id:id},function(err, result){
+		Restaurant.find({_id:id}).populate("items").exec(function(err, result){
 			if(err){
 				res.json({
 					status:'fail',

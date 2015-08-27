@@ -1,8 +1,11 @@
 var Order = require('../models/order');
+var mongoose = require('mongoose');
 
 //POST : Create a new Order
 exports.create = function (req,res) {
 	var order = new Order(req.body);
+	order.userId = mongoose.Types.ObjectId(order.userId);
+	order.restaurantId = mongoose.Types.ObjectId(order.restaurantId);
 	order.save(function(err,result){
 		if(err){
 			res.json({
@@ -24,7 +27,7 @@ exports.create = function (req,res) {
 //GET Order 
 exports.get = function(req,res){
 	var id = req.params.id;
-	Order.find({_id:id},function(err, result){
+	Order.findOne({_id:id}).populate('userId').populate('restaurantId').exec(function(err, result){
 		if(err){
 			res.json({
 				status:'fail',
@@ -36,7 +39,7 @@ exports.get = function(req,res){
 			res.json({
 				status:'ok',
 				message:'success',
-				data:result[0]
+				data:result
 			});
 		}
 	});
